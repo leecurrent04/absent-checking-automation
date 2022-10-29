@@ -67,21 +67,20 @@ class WindowMainClass(QMainWindow, form_main):
                 print("error")
             else:
                 os.mkdir(path_directory)
-                os.mkdir("%s/%s" % (path_directory, "raw"))
 
                 shutil.copy("./resource/form_style.css", "%s/form_style.css" % path_directory)
-                shutil.copy("./resource/form_style.css", "%s/%s/form_style.css" % (path_directory, "raw"))
 
                 # xlsx to csv
                 xlsx = pandas.read_excel(ori_file_path)
                 path_csv = "%s/%s.csv" % (path_directory, ori_file_name.split(".")[0])
                 xlsx.to_csv(path_csv)
 
-            self.statusBar.showMessage("%s is ready."%ori_file_name)
+            self.statusBar.showMessage("%s is ready." % ori_file_name)
 
     def run_making_pdf(self):
         global path_csv
         global path_directory
+        file_data = ""
 
         teacher = self.lineEdit.text()
         tmp_grade = self.SBox_grade.value()
@@ -104,50 +103,51 @@ class WindowMainClass(QMainWindow, form_main):
                         _, date, number, name, _, reason = n.split(",")
                         year, month, day = date.split(".")
 
-                        path_raw_file = "%s/raw/%s%s%s_%s.html" % (path_directory, year, month, day, name)
-                        with open(path_raw_file, 'w', encoding='UTF-8') as output:
+                        # load resource file
+                        with open("./resource/form_mid.html", 'r', encoding='UTF-8') as form:
+                            tmp_data = form.read()
 
-                            # load resource file
-                            with open("./resource/form.html", 'r', encoding='UTF-8') as form:
-                                tmp_data = form.read()
+                        # check absent type
+                        if tmp_type == "출석인정결석":
+                            codeA = "Ｏ"; codeB = ""; codeC = ""
+                        elif tmp_type == "질병결석":
+                            codeA = ""; codeB = "Ｏ"; codeC = ""
+                        elif tmp_type == "출석인정조퇴":
+                            codeA = ""; codeB = ""; codeC = "Ｏ"
 
-                            # check absent type
-                            if tmp_type == "출석인정결석":
-                                codeA = "Ｏ"; codeB = ""; codeC = ""
-                            elif tmp_type == "질병결석":
-                                codeA = ""; codeB = "Ｏ"; codeC = ""
-                            elif tmp_type == "출석인정조퇴":
-                                codeA = ""; codeB = ""; codeC = "Ｏ"
+                        if len(name) < 6 :
+                            tmp_name = "　"*(5-len(name)) + name
+                        else:
+                            tmp_name = name
 
-                            if len(name) < 6 :
-                                tmp_name = "　"*(5-len(name)) + name
-                            else:
-                                tmp_name = name
-                                
-                            if len(teacher) < 6 :
-                                teacher = "　"*(5-len(teacher)) + teacher
+                        if len(teacher) < 6 :
+                            teacher = "　"*(5-len(teacher)) + teacher
 
-                            # input data
-                            old_data = ["$yr", "$mo", "$dy",
-                                        "$grade", "$class", "$number", "$name",
-                                        "$reason", "$state", "$teacher",
-                                        "$a", "$b", "$c"
-                                        ]
+                        # input data
+                        old_data = ["$yr", "$mo", "$dy",
+                                    "$grade", "$class", "$number", "$name",
+                                    "$reason", "$state", "$teacher",
+                                    "$a", "$b", "$c"
+                                    ]
 
-                            new_data = [year, month, day,
-                                        tmp_grade, tmp_class, number, tmp_name,
-                                        reason, tmp_type[-2:], teacher,
-                                        codeA, codeB, codeC
-                                        ]
+                        new_data = [year, month, day,
+                                    tmp_grade, tmp_class, number, tmp_name,
+                                    reason, tmp_type[-2:], teacher,
+                                    codeA, codeB, codeC
+                                    ]
 
-                            for i in range(0,len(old_data)):
-                                tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
-                            output.write(tmp_data)
+                        for i in range(0,len(old_data)):
+                            tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
 
-                            with open("%s/all.html" % path_directory, 'a') as all_file:
-                                all_file.write(tmp_data)
+                        file_data += tmp_data
+                        file_data += "\t<div style='page-break-before:always'></div>\n"
 
         self.statusBar.showMessage("done")
+
+        with open("%s/all.html" % path_directory, 'w', encoding='UTF-8') as file:
+            with open("./resource/form.html", 'r', encoding='UTF-8') as html:
+                tmp_file_data = html.read() % file_data
+                file.write(tmp_file_data)
 
 
 if __name__ == "__main__":

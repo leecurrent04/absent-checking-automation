@@ -72,7 +72,7 @@
 .cs14 {font-size:12pt;color:#000000;font-family:"굴림체";letter-spacing:0.16em;}
 .cs15 {font-size:12pt;color:#000000;font-family:"굴림체";}
 .cs16 {font-size:13pt;color:#000000;font-family:"굴림체";}
-.cs17 {font-size:13pt;color:#FF0000;font-family:"굴림체";}
+.cs17 {visibility:hidden;font-size:13pt;color:#FF0000;font-family:"굴림체";}
 .cs18 {font-size:13pt;color:#000000;font-family:"굴림체";}
 .cs18::after {content:'';position:absolute;left:0;right:0;top:0;bottom:0;z-index:-1;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iOTQlIiB4Mj0iMTAwJSIgeTI9Ijk0JSIgc3R5bGU9InN0cm9rZTpyZ2IoMCwwLDApO3N0cm9rZS13aWR0aDowLjJtbSIvPjwvc3ZnPg==');}
 .ps0 {text-align:justify;}
@@ -86,15 +86,15 @@
 .ps8 {text-align:justify;}
 .ps9 {text-align:justify;}
 .ps10 {text-align:justify;}
-.ps11 {text-align:center;}
-.ps12 {text-align:right;}
+.ps11 {text-align:right;}
+.ps12 {text-align:center;}
 .ps13 {text-align:center;}
 .ps14 {text-align:center;}
-.ps15 {text-align:center;}
+.ps15 {text-align:justify;}
 .ps16 {text-align:justify;}
-.ps17 {text-align:justify;}
+.ps17 {text-align:right;}
 .ps18 {text-align:right;}
-.ps19 {text-align:right;}
+.ps19 {text-align:justify;}
 @media print {
 .hpa {margin:0;border:0 black none;box-shadow:none;}
 body {padding:0;}
