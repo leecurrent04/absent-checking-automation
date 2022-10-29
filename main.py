@@ -24,12 +24,6 @@ form_main = uic.loadUiType(resource_path("main.ui"))[0]
 path_csv = ""
 path_directory = ""
 
-if platform.system() == 'Linux':
-    path_chrome = "google-chrome"
-else:
-    path_chrome = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
-    path_msedge = '"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"'
-
 
 class WindowMainClass(QMainWindow, form_main):
     def __init__(self):
@@ -42,12 +36,10 @@ class WindowMainClass(QMainWindow, form_main):
         # self.setWindowIcon(QIcon('resource/img/ADU.svg'))
         self.setWindowTitle("출결확인서 자동 작성 도구")
 
-        self.fileButton.setIcon(QIcon('resource/img/document-open-symbolic.svg'))
-        self.chromeButton.setIcon(QIcon('resource/img/google-chrome.svg'))
-        self.msedgeButton.setIcon(QIcon('resource/img/microsoft-edge.svg'))
+        self.Button_file.setIcon(QIcon('resource/img/document-open-symbolic.svg'))
 
-        self.fileButton.clicked.connect(self.table_file_load)
-        self.runButton.clicked.connect(self.run_making_pdf)
+        self.Button_file.clicked.connect(self.table_file_load)
+        self.Button_run.clicked.connect(self.run_making_pdf)
 
     def table_file_load(self):
         # return data : ('[file path]','file type')
@@ -76,8 +68,8 @@ class WindowMainClass(QMainWindow, form_main):
             else:
                 os.mkdir(path_directory)
                 os.mkdir("%s/%s" % (path_directory, "raw"))
-                os.mkdir("%s/%s" % (path_directory, "pdf"))
 
+                shutil.copy("./resource/form_style.css", "%s/form_style.css" % path_directory)
                 shutil.copy("./resource/form_style.css", "%s/%s/form_style.css" % (path_directory, "raw"))
 
                 # xlsx to csv
@@ -92,8 +84,8 @@ class WindowMainClass(QMainWindow, form_main):
         global path_directory
 
         teacher = self.lineEdit.text()
-        tmp_grade = self.spinBox.value()
-        tmp_class = self.spinBox_2.value()
+        tmp_grade = self.SBox_grade.value()
+        tmp_class = self.SBox_class.value()
 
         self.statusBar.showMessage("start")
 
@@ -152,30 +144,8 @@ class WindowMainClass(QMainWindow, form_main):
                                 tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
                             output.write(tmp_data)
 
-                        # browser check
-                        if self.chromeButton.isChecked:
-                            program = path_chrome
-                        elif self.msedgeButton.isChecked:
-                            program = path_msedge
-
-                        # platform check
-                        if platform.system() == 'Linux':
-                            path_script = "%s/script.sh" % path_directory
-                        else:
-                            path_script = "%s/script.bat" % path_directory
-
-                        with open(path_script, 'a') as sp:
-                            sp.write('%s --headless --disable-gpu --print-to-pdf-no-header --print-to-pdf="%s" --no-margins "%s"\n' % (
-                                program, "%s/pdf/%s%s%s_%s.pdf" % (path_directory, year, month, day, name), path_raw_file
-                                )
-                            )
-
-        # platform check
-        if platform.system() == 'Linux':
-            os.system("chmod +x %s/script.sh" % path_directory)
-            os.system("%s/script.sh" % path_directory)
-        else:
-            os.system("%s/script.bat" % path_directory)
+                            with open("%s/all.html" % path_directory, 'a') as all_file:
+                                all_file.write(tmp_data)
 
         self.statusBar.showMessage("done")
 

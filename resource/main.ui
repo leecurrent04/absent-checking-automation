@@ -20,61 +20,38 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="2">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="chromeButton">
+       <widget class="QPushButton" name="Button_file">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
+          <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Chrome</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>img/google-chrome.svg</normaloff>img/google-chrome.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Load File</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="msedgeButton">
+       <widget class="QPushButton" name="Button_run">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
+          <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Edge</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>img/microsoft-edge.svg</normaloff>img/microsoft-edge.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
+         <string>Make File</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
-    <item row="1" column="1">
+    <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="0">
        <widget class="QLabel" name="label">
@@ -95,7 +72,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_2">
+       <widget class="QSpinBox" name="SBox_class">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -148,7 +125,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox">
+       <widget class="QSpinBox" name="SBox_grade">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -157,64 +134,19 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="fileButton">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string> Load File</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>img/document-open-symbolic.svg</normaloff>img/document-open-symbolic.svg</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="runButton">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Make File</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
+ <tabstops>
+  <tabstop>Button_file</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>SBox_grade</tabstop>
+  <tabstop>SBox_class</tabstop>
+  <tabstop>Button_run</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
