@@ -23,8 +23,8 @@ form_main = uic.loadUiType(resource_path("main.ui"))[0]
 path_csv = ""
 path_directory = ""
 
-# path_chrome = "google-chrome"
-path_chrome = "C:\Program` Files\Google\Chrome\Application\chrome.exe"
+path_chrome = "google-chrome"
+#path_chrome = "C:\Program` Files\Google\Chrome\Application\chrome.exe"
 path_msedge = "C:\Program` Files` `(x86`)\Microsoft\Edge\Application\msedge.exe"
 
 
@@ -143,9 +143,12 @@ class WindowMainClass(QMainWindow, form_main):
                         elif self.msedgeButton.isChecked:
                             program = path_msedge
 
-                        os.system("%s --headless --print-to-pdf-no-header --print-to-pdf=%s --no-margins %s" % (
+                        with open("%s/script.sh" % path_directory, 'a', encoding='UTF-8') as sp:
+                            sp.write("%s --headless --print-to-pdf-no-header --print-to-pdf=%s --no-margins %s\n" % (
                             program, "%s/pdf/%s%s%s_%s.pdf" % (path_directory, year, month, day, name), path_raw_file
                         ))
+
+        os.system("%s/script.sh" % path_directory)
 
         self.statusBar.showMessage("done")
 
