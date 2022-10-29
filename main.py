@@ -57,6 +57,7 @@ class WindowMainClass(QMainWindow, form_main):
             "./",
             "Excel(*.xlsx *xls)"
         )
+        print(ori_file_path)
 
         if ori_file_path != "":
             global path_csv
@@ -84,6 +85,8 @@ class WindowMainClass(QMainWindow, form_main):
                 path_csv = "%s/%s.csv" % (path_directory, ori_file_name.split(".")[0])
                 xlsx.to_csv(path_csv)
 
+            self.statusBar.showMessage("%s is ready."%ori_file_name)
+
     def run_making_pdf(self):
         global path_csv
         global path_directory
@@ -92,7 +95,7 @@ class WindowMainClass(QMainWindow, form_main):
         tmp_grade = self.spinBox.value()
         tmp_class = self.spinBox_2.value()
 
-        self.statusBar.showMessage("doing")
+        self.statusBar.showMessage("start")
 
         # 학생 출결 정보 파일을 불러옴
         with open(path_csv, 'r', encoding='UTF-8') as table:
@@ -124,11 +127,13 @@ class WindowMainClass(QMainWindow, form_main):
                             elif tmp_type == "출석인정조퇴":
                                 codeA = ""; codeB = ""; codeC = "Ｏ"
 
-                            if len(name) == 3:
-                                tmp_name = "　　" + name
-                                print(tmp_name)
+                            if len(name) < 6 :
+                                tmp_name = "　"*(5-len(name)) + name
                             else:
                                 tmp_name = name
+                                
+                            if len(teacher) < 6 :
+                                teacher = "　"*(5-len(teacher)) + teacher
 
                             # input data
                             old_data = ["$yr", "$mo", "$dy",
@@ -160,7 +165,7 @@ class WindowMainClass(QMainWindow, form_main):
                             path_script = "%s/script.bat" % path_directory
 
                         with open(path_script, 'a') as sp:
-                            sp.write('%s --headless --print-to-pdf-no-header --print-to-pdf="%s" --no-margins "%s"\n' % (
+                            sp.write('%s --headless --disable-gpu --print-to-pdf-no-header --print-to-pdf="%s" --no-margins "%s"\n' % (
                                 program, "%s/pdf/%s%s%s_%s.pdf" % (path_directory, year, month, day, name), path_raw_file
                                 )
                             )
