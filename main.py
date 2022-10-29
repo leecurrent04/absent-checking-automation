@@ -4,6 +4,7 @@ import sys
 import os
 import os.path
 import shutil
+import platform
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -23,9 +24,11 @@ form_main = uic.loadUiType(resource_path("main.ui"))[0]
 path_csv = ""
 path_directory = ""
 
-path_chrome = "google-chrome"
-#path_chrome = "C:\Program` Files\Google\Chrome\Application\chrome.exe"
-path_msedge = "C:\Program` Files` `(x86`)\Microsoft\Edge\Application\msedge.exe"
+if platform.system() == 'Linux':
+    path_chrome = "google-chrome"
+else:
+    path_chrome = '"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+    path_msedge = '"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"'
 
 
 class WindowMainClass(QMainWindow, form_main):
@@ -121,6 +124,12 @@ class WindowMainClass(QMainWindow, form_main):
                             elif tmp_type == "출석인정조퇴":
                                 codeA = ""; codeB = ""; codeC = "Ｏ"
 
+                            if len(name) == 3:
+                                tmp_name = "　　" + name
+                                print(tmp_name)
+                            else:
+                                tmp_name = name
+
                             # input data
                             old_data = ["$yr", "$mo", "$dy",
                                         "$grade", "$class", "$number", "$name",
@@ -129,7 +138,7 @@ class WindowMainClass(QMainWindow, form_main):
                                         ]
 
                             new_data = [year, month, day,
-                                        tmp_grade, tmp_class, number, name,
+                                        tmp_grade, tmp_class, number, tmp_name,
                                         reason, tmp_type[-2:], teacher,
                                         codeA, codeB, codeC
                                         ]
@@ -138,17 +147,30 @@ class WindowMainClass(QMainWindow, form_main):
                                 tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
                             output.write(tmp_data)
 
+                        # browser check
                         if self.chromeButton.isChecked:
                             program = path_chrome
                         elif self.msedgeButton.isChecked:
                             program = path_msedge
 
-                        with open("%s/script.sh" % path_directory, 'a', encoding='UTF-8') as sp:
-                            sp.write("%s --headless --print-to-pdf-no-header --print-to-pdf=%s --no-margins %s\n" % (
-                            program, "%s/pdf/%s%s%s_%s.pdf" % (path_directory, year, month, day, name), path_raw_file
-                        ))
+                        # platform check
+                        if platform.system() == 'Linux':
+                            path_script = "%s/script.sh" % path_directory
+                        else:
+                            path_script = "%s/script.bat" % path_directory
 
-        os.system("%s/script.sh" % path_directory)
+                        with open(path_script, 'a') as sp:
+                            sp.write('%s --headless --print-to-pdf-no-header --print-to-pdf="%s" --no-margins "%s"\n' % (
+                                program, "%s/pdf/%s%s%s_%s.pdf" % (path_directory, year, month, day, name), path_raw_file
+                                )
+                            )
+
+        # platform check
+        if platform.system() == 'Linux':
+            os.system("chmod +x %s/script.sh" % path_directory)
+            os.system("%s/script.sh" % path_directory)
+        else:
+            os.system("%s/script.bat" % path_directory)
 
         self.statusBar.showMessage("done")
 
