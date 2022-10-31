@@ -94,53 +94,57 @@ class WindowMainClass(QMainWindow, form_main):
             # 한 줄씩 처리
             for n in table.readlines()[1:]:
                 # variable
-                tmp_type = n.split(",")[4]
+                tmp_type = n[:-1].split(",")[4]
 
                 if tmp_type[-2:] == "결석" or tmp_type == "출석인정조퇴":
                     if tmp_type != "미인정결석":
-                        print(n, end="")
 
-                        _, date, number, name, _, reason = n.split(",")
+                        # n[:-1] : delete \n
+                        _, date, number, name, _, reason = n[:-1].split(",")
                         year, month, day = date.split(".")
 
-                        # load resource file
-                        with open("./resource/form_mid.html", 'r', encoding='UTF-8') as form:
-                            tmp_data = form.read()
+                        if reason != "가정학습" and reason != "가정 학습":
 
-                        # check absent type
-                        if tmp_type == "출석인정결석":
-                            codeA = "Ｏ"; codeB = "　"; codeC = "　"
-                        elif tmp_type == "질병결석":
-                            codeA = "　"; codeB = "Ｏ"; codeC = "　"
-                        elif tmp_type == "출석인정조퇴":
-                            codeA = "　"; codeB = "　"; codeC = "Ｏ"
+                            print(n, end="")
 
-                        if len(name) < 6 :
-                            tmp_name = "　"*(5-len(name)) + name
-                        else:
-                            tmp_name = name
+                            # load resource file
+                            with open("./resource/form_mid.html", 'r', encoding='UTF-8') as form:
+                                tmp_data = form.read()
 
-                        if len(teacher) < 6 :
-                            teacher = "　"*(5-len(teacher)) + teacher
+                            # check absent type
+                            if tmp_type == "출석인정결석":
+                                codeA = "Ｏ"; codeB = "　"; codeC = "　"
+                            elif tmp_type == "질병결석":
+                                codeA = "　"; codeB = "Ｏ"; codeC = "　"
+                            elif tmp_type == "출석인정조퇴":
+                                codeA = "　"; codeB = "　"; codeC = "Ｏ"
 
-                        # input data
-                        old_data = ["$yr", "$mo", "$dy",
-                                    "$grade", "$class", "$number", "$name",
-                                    "$reason", "$state", "$teacher",
-                                    "$a", "$b", "$c"
-                                    ]
+                            if len(name) < 6 :
+                                tmp_name = "　"*(5-len(name)) + name
+                            else:
+                                tmp_name = name
 
-                        new_data = [year, month, day,
-                                    tmp_grade, tmp_class, number, tmp_name,
-                                    reason, tmp_type[-2:], teacher,
-                                    codeA, codeB, codeC
-                                    ]
+                            if len(teacher) < 6 :
+                                teacher = "　"*(5-len(teacher)) + teacher
 
-                        for i in range(0,len(old_data)):
-                            tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
+                            # input data
+                            old_data = ["$yr", "$mo", "$dy",
+                                        "$grade", "$class", "$number", "$name",
+                                        "$reason", "$state", "$teacher",
+                                        "$a", "$b", "$c"
+                                        ]
 
-                        file_data += tmp_data
-                        file_data += "<div style='page-break-before:always'></div>\n"
+                            new_data = [year, month, day,
+                                        tmp_grade, tmp_class, number, tmp_name,
+                                        reason, tmp_type[-2:], teacher,
+                                        codeA, codeB, codeC
+                                        ]
+
+                            for i in range(0,len(old_data)):
+                                tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
+
+                            file_data += tmp_data
+                            file_data += "<div style='page-break-before:always'></div>\n"
 
         self.statusBar.showMessage("done")
 
