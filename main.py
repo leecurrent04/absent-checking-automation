@@ -109,11 +109,11 @@ class WindowMainClass(QMainWindow, form_main):
 
                         # check absent type
                         if tmp_type == "출석인정결석":
-                            codeA = "Ｏ"; codeB = ""; codeC = ""
+                            codeA = "Ｏ"; codeB = "　"; codeC = "　"
                         elif tmp_type == "질병결석":
-                            codeA = ""; codeB = "Ｏ"; codeC = ""
+                            codeA = "　"; codeB = "Ｏ"; codeC = "　"
                         elif tmp_type == "출석인정조퇴":
-                            codeA = ""; codeB = ""; codeC = "Ｏ"
+                            codeA = "　"; codeB = "　"; codeC = "Ｏ"
 
                         if len(name) < 6 :
                             tmp_name = "　"*(5-len(name)) + name
