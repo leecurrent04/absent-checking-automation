@@ -1,0 +1,5 @@
+./resource/form.html
+./resource/form_mid.html
+./resource/form_style.css
+./resource/img/document-open-symbolic.svg
+./resource/main.ui

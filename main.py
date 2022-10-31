@@ -140,7 +140,7 @@ class WindowMainClass(QMainWindow, form_main):
                             tmp_data = tmp_data.replace(str(old_data[i]), str(new_data[i]))
 
                         file_data += tmp_data
-                        file_data += "\t<div style='page-break-before:always'></div>\n"
+                        file_data += "<div style='page-break-before:always'></div>\n"
 
         self.statusBar.showMessage("done")
 
