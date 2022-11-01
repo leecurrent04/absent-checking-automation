@@ -64,7 +64,8 @@ class WindowMainClass(QMainWindow, form_main):
             )
 
             if os.path.isdir(path_directory) == 1:
-                print("error")
+                print("error: same directory")
+                self.statusBar.showMessage("There are already same folder! Try 1 minute later.")
             else:
                 os.mkdir(path_directory)
 
@@ -75,7 +76,7 @@ class WindowMainClass(QMainWindow, form_main):
                 path_csv = "%s/%s.csv" % (path_directory, ori_file_name.split(".")[0])
                 xlsx.to_csv(path_csv)
 
-            self.statusBar.showMessage("%s is ready." % ori_file_name)
+                self.statusBar.showMessage("%s is ready." % ori_file_name)
 
     def run_making_pdf(self):
         global path_csv
@@ -100,7 +101,16 @@ class WindowMainClass(QMainWindow, form_main):
                     if tmp_type != "미인정결석":
 
                         # n[:-1] : delete \n
-                        _, date, number, name, _, reason = n[:-1].split(",")
+                        tmp_split_data = n[:-1].split(",")
+
+                        # if reason include ","
+                        if len(tmp_split_data) > 6:
+                            _, date, number, name = tmp_split_data[:4]
+                            reason = ', '.join(str(s) for s in tmp_split_data[5:])
+                            reason = reason.replace('"', "")
+                        else:
+                            _, date, number, name, _, reason = tmp_split_data
+
                         year, month, day = date.split(".")
 
                         if reason != "가정학습" and reason != "가정 학습":
